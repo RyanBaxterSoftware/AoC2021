@@ -33,7 +33,7 @@ func displayMenu() {
 	}
 	dayFiles := make([]fs.FileInfo, 0)
 	for _, file := range files {
-		if strings.Contains(file.Name(), "aoc2022day") {
+		if strings.Contains(file.Name(), "aoc2021day") {
 			dayFiles = append(dayFiles, file)
 		}
 	}
