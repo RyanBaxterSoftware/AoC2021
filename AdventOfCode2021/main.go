@@ -47,5 +47,9 @@ func processText(text string) {
 	switch text {
 	case "0":
 		helloWorld()
+	case "1":
+		fmt.Println("This day isn't implemented yet")
+	default:
+		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
 }
