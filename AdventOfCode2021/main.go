@@ -48,7 +48,7 @@ func processText(text string) {
 	case "0":
 		helloWorld()
 	case "1":
-		fmt.Println("This day isn't implemented yet")
+		CalculateDescent()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
