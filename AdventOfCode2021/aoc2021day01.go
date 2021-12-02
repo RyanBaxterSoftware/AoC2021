@@ -24,7 +24,7 @@ func CalculateDescent() {
 		case "2":
 			numIncreases, _ := countDepthWindows(inputData)
 			fmt.Printf("There were %d increases between windows\n", numIncreases)
-		}
+	}
 }
 
 // TODO: add in err values and checks

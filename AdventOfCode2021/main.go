@@ -49,6 +49,8 @@ func processText(text string) {
 		helloWorld()
 	case "1":
 		CalculateDescent()
+	case "2":
+		CalculateMovement()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
