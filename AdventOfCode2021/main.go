@@ -51,6 +51,8 @@ func processText(text string) {
 		CalculateDescent()
 	case "2":
 		CalculateMovement()
+	case "3":
+		CalculatePowerUsage()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
