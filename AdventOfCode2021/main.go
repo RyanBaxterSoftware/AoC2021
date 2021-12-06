@@ -53,6 +53,8 @@ func processText(text string) {
 		CalculateMovement()
 	case "3":
 		CalculatePowerUsage()
+	case "4":
+		bingoBaybee()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
