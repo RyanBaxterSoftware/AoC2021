@@ -23,7 +23,10 @@ func checkForBingoSimple(card bingoCard) bool {
 	if checkForRowBingo(card) > 0 {
 		bingoFound = true
 	}
-	//checkForColumnBingo(card, numbers)
+	if checkForColumnBingo(card) > 0 {
+		bingoFound = true
+	}
+
 	return bingoFound
 }
 
@@ -40,6 +43,32 @@ func checkForRowBingo(card bingoCard) int {
 		if bingo {
 			bingos = which + 1
 		}
+	}
+	if bingos != 0 {
+		fmt.Printf("We have a bingo from the row of the bingo card. Here's the card: \n %v \n and here's the winning numbers\n%v\n", card.Rows, card.CalledNumbers)
+	}
+	return bingos
+}
+
+func checkForColumnBingo(card bingoCard) int {
+	bingos := 0
+	var realWin []string
+	for column := 0; column < len(strings.Split(card.Rows[0], " ")); column++ {
+		bingo := true
+		winningNumbers := make([]string, 0)
+		for _, row := range card.Rows {
+			winningNumbers = append(winningNumbers, strings.Split(row, " ")[column])
+			if !contains(card.CalledNumbers, strings.Split(row, " ")[column]) {
+				bingo = false
+			}
+		}
+		if bingo {
+			bingos = column + 1
+			realWin = winningNumbers
+		}
+	}
+	if(bingos != 0) {
+		fmt.Printf("We got a bingo in column %v and the called numbers are %v which fit into %v and hte winning numbers there are %v\n", bingos, card.CalledNumbers, card.Rows, realWin)
 	}
 	return bingos
 }

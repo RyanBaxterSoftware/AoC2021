@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -20,7 +21,7 @@ func bingoBaybee() {
 	case "1":
 		standardRowsAndColumns(inputData)
 	case "2":
-		CalculateOxygenScrubbing(inputData)
+		lastWinnerRowsAndColumns(inputData)
 	}
 }
 
@@ -51,7 +52,7 @@ func standardRowsAndColumns(inputData string) {
 			cards = append(cards, createBingoCard(currentCard))
 			currentCard = make([]string, 0)
 		} else {
-			currentCard = append(currentCard, line)
+			currentCard = append(currentCard, strings.TrimSpace(strings.Replace(line, "  ", " ", -1)))
 			fmt.Printf("The current card we have is %v\nThe length is %v", currentCard, len(currentCard))
 		}
 	}
@@ -65,10 +66,65 @@ func standardRowsAndColumns(inputData string) {
 			var isBingo bool
 			isBingo, cards[cardIndex] = AddNumber(card, number)
 			if isBingo && len(winners) == 0 {
-				winners = append(winners, card)
+				winners = append(winners, cards[cardIndex])
 			}
 		}
 	}
-	fmt.Printf("The calling numbers are as follows: \n%v\nand the cards we have are as follows %v\n", callingNumbers, cards)
+	fmt.Printf("The calling numbers are as follows: \n%v\n", callingNumbers)
 	fmt.Printf("The winning cards are as follows: \n%v", winners)
+
+	fmt.Printf("The reportable value for the winning card is %d", calcCardSum(winners[0]))
+}
+
+func lastWinnerRowsAndColumns(inputData string) {
+	bingolines := strings.Split(inputData, "\n")
+
+	callingNumbers := bingolines[0]
+
+	currentCard := make([]string, 0)
+	cards := make([]bingoCard, 0)
+	for _, line := range bingolines[1:] {
+		if line == "" && len(currentCard) > 0 {
+			cards = append(cards, createBingoCard(currentCard))
+			currentCard = make([]string, 0)
+		} else {
+			currentCard = append(currentCard, strings.TrimSpace(strings.Replace(line, "  ", " ", -1)))
+			fmt.Printf("The current card we have is %v\nThe length is %v", currentCard, len(currentCard))
+		}
+	}
+	if len(currentCard) > 0 {
+		cards = append(cards, createBingoCard(currentCard))
+	}
+
+	var lastWinner bingoCard
+	for _, number := range strings.Split(callingNumbers, ",") {
+		for cardIndex, card := range cards {
+			var isBingo bool
+			isBingo, cards[cardIndex] = AddNumber(card, number)
+			if isBingo {
+				lastWinner = cards[cardIndex]
+				// TODO: make this remove cards from the list of cards and not affect the running of the app
+				cards = append(cards[:cardIndex], cards[cardIndex+1:]...)
+			}
+		}
+	}
+	fmt.Printf("The calling numbers are as follows: \n%v\n", callingNumbers)
+	fmt.Printf("The winning cards are as follows: \n%v", lastWinner)
+
+	fmt.Printf("The reportable value for the winning card is %d", calcCardSum(lastWinner))
+}
+
+func calcCardSum(card bingoCard) int {
+	sumOfNumbers := 0
+	for _, row := range card.Rows {
+		for _, number := range strings.Split(row, " ") {
+			if !contains(card.CalledNumbers, number) {
+				numInt, _ := strconv.Atoi(number)
+				sumOfNumbers += numInt
+			}
+		}
+	}
+	finalNum, _ := strconv.Atoi(card.CalledNumbers[len(card.CalledNumbers) - 1])
+	finalValue := sumOfNumbers * finalNum
+	return finalValue
 }
