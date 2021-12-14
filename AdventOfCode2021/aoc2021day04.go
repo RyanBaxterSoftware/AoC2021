@@ -10,6 +10,7 @@ import (
 
 func bingoBaybee() {
 	DisplayBingoSquid()
+	// TODO: Update display to print out nicer cards and less gross numbers
 	fmt.Println("This squid is looking to play some bingo!!!! (bingo squid) Would you like to use traditional rows and columns(1) or (2)?")
 
 	reader := bufio.NewReader(os.Stdin)
@@ -98,15 +99,17 @@ func lastWinnerRowsAndColumns(inputData string) {
 
 	var lastWinner bingoCard
 	for _, number := range strings.Split(callingNumbers, ",") {
+		tempCards := make([]bingoCard, 0)
 		for cardIndex, card := range cards {
 			var isBingo bool
 			isBingo, cards[cardIndex] = AddNumber(card, number)
 			if isBingo {
 				lastWinner = cards[cardIndex]
-				// TODO: make this remove cards from the list of cards and not affect the running of the app
-				cards = append(cards[:cardIndex], cards[cardIndex+1:]...)
+			} else {
+				tempCards = append(tempCards, cards[cardIndex])
 			}
 		}
+		cards = tempCards
 	}
 	fmt.Printf("The calling numbers are as follows: \n%v\n", callingNumbers)
 	fmt.Printf("The winning cards are as follows: \n%v", lastWinner)
@@ -124,7 +127,7 @@ func calcCardSum(card bingoCard) int {
 			}
 		}
 	}
-	finalNum, _ := strconv.Atoi(card.CalledNumbers[len(card.CalledNumbers) - 1])
+	finalNum, _ := strconv.Atoi(card.CalledNumbers[len(card.CalledNumbers)-1])
 	finalValue := sumOfNumbers * finalNum
 	return finalValue
 }
