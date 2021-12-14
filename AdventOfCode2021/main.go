@@ -59,6 +59,8 @@ func processText(text string) {
 		VentNavigation()
 	case "6":
 		FishSpawnCalculations()
+	case "7":
+		CrabSubMovementCalculation()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
