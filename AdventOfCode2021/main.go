@@ -61,6 +61,8 @@ func processText(text string) {
 		FishSpawnCalculations()
 	case "7":
 		CrabSubMovementCalculation()
+	case "8":
+		NumpadDisplayMixupFixup()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}

@@ -11,7 +11,7 @@ import (
 
 func CrabSubMovementCalculation() {
 	DisplayCrabSubs()
-	fmt.Println("Look at all these fishes! Would you like to calculate their spawning in the small scale(1) or full scale(2)?")
+	fmt.Println("The crabs have come to your aid! Help them find out where to line up for your escape route! Are you using standard fuel modeling(1) or variable(2)?")
 
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
