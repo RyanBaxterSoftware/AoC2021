@@ -31,10 +31,10 @@ func DisplayOceanVents() {
 	fmt.Println("               oOOOO")
 	fmt.Println("              ooOO")
 	fmt.Println("             /vvv\\")
-	fmt.Println("            /V V V\\") 
+	fmt.Println("            /V V V\\")
 	fmt.Println("           /V  V  V\\")
 	fmt.Println("          /         \\")
-	fmt.Println("         /           \\") 
+	fmt.Println("         /           \\")
 	fmt.Println("        /             \\")
 	fmt.Println("       /               \\")
 	fmt.Println("      /                 \\")
@@ -160,39 +160,39 @@ func addVentToMapSimple(addedVent vent, existingMap map[int][]int) (map[int][]in
 			} else {
 				danger = append(danger, fmt.Sprintf("[%d, %d]", x, addedVent.Y1))
 			}
-		} 
+		}
 	} else {
-			var xmax int
-			var xmin int
-			var ystart int
-			var yend int
-			if addedVent.X1 > addedVent.X2 {
-				xmax = addedVent.X1
-				xmin = addedVent.X2
-				ystart = addedVent.Y2
-				yend = addedVent.Y1
+		var xmax int
+		var xmin int
+		var ystart int
+		var yend int
+		if addedVent.X1 > addedVent.X2 {
+			xmax = addedVent.X1
+			xmin = addedVent.X2
+			ystart = addedVent.Y2
+			yend = addedVent.Y1
+		} else {
+			xmax = addedVent.X2
+			xmin = addedVent.X1
+			ystart = addedVent.Y1
+			yend = addedVent.Y2
+		}
+		y := ystart
+		for x := xmin; x <= xmax; x++ {
+			if !alreadyVisitedCheck(x, y, existingMap) {
+				if existingMap[x] == nil {
+					existingMap[x] = make([]int, 0)
+				}
+				existingMap[x] = append(existingMap[x], y)
 			} else {
-				xmax = addedVent.X2
-				xmin = addedVent.X1
-				ystart = addedVent.Y1
-				yend = addedVent.Y2
+				danger = append(danger, fmt.Sprintf("[%d, %d]", x, y))
 			}
-			y := ystart
-			for x := xmin; x <= xmax; x++ {
-				if !alreadyVisitedCheck(x, y, existingMap) {
-					if existingMap[x] == nil {
-						existingMap[x] = make([]int, 0)
-					}
-					existingMap[x] = append(existingMap[x], y)
-				} else {
-					danger = append(danger, fmt.Sprintf("[%d, %d]", x, y))
-				}
-				if yend < ystart {
-					y--
-				} else {
-					y++
-				}
+			if yend < ystart {
+				y--
+			} else {
+				y++
 			}
+		}
 	}
 	return existingMap, danger
 }

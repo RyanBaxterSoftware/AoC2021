@@ -63,6 +63,8 @@ func processText(text string) {
 		CrabSubMovementCalculation()
 	case "8":
 		NumpadDisplayMixupFixup()
+	case "9":
+		VolcanicVentAnalysis()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
