@@ -65,6 +65,8 @@ func processText(text string) {
 		NumpadDisplayMixupFixup()
 	case "9":
 		VolcanicVentAnalysis()
+	case "10":
+		ParseNavigationSyntaxFile()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
