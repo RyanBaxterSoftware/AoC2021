@@ -67,6 +67,8 @@ func processText(text string) {
 		VolcanicVentAnalysis()
 	case "10":
 		ParseNavigationSyntaxFile()
+	case "11":
+		CalculateOctopusEvents()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}

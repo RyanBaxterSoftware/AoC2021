@@ -51,7 +51,7 @@ func ParseNavigationSyntaxFile() {
 	text, _ := reader.ReadString('\n')
 	text = strings.Replace(text, "\r\n", "", -1)
 
-	inputData, _ := ReadFile("./Day10InputExample.txt")
+	inputData, _ := ReadFile("./Day10Input.txt")
 	switch text {
 	case "1":
 		processSyntaxFile(inputData)
@@ -116,11 +116,14 @@ func processSyntaxFileAutocomplete(inputData string) {
 	var openBraces Stack
 	allScores := make([]big.Int, 0)
 	for _, line := range lines {
+		fmt.Printf("Starting a new line\n\n\n")
 		foundError := false
 		for x := 0; x < len(line) && !foundError; x++ {
 			if string(line[x]) == "(" || string(line[x]) == "[" || string(line[x]) == "{" || string(line[x]) == "<" {
 				openBraces.Push(string(line[x]))
+				fmt.Printf("We are adding in %c\n", line[x])
 			} else {
+				fmt.Printf("The open braces are %v and we are examining value %c\n", openBraces, rune(line[x]))
 				switch string(line[x]) {
 				case ")":
 					expectedValue, _ := openBraces.Peek()
@@ -155,6 +158,7 @@ func processSyntaxFileAutocomplete(inputData string) {
 		}
 		if !foundError {
 			score := big.NewInt(0)
+			fmt.Printf("The line we're about to complete is %v\n", openBraces)
 			for !openBraces.IsEmpty() {
 				value, _ := openBraces.Pop()
 
@@ -170,7 +174,13 @@ func processSyntaxFileAutocomplete(inputData string) {
 					score.Add(score, big.NewInt(4))
 				}
 			}
+			fmt.Printf("We have obtained a score of %d\n", score)
 			allScores = append(allScores, *score)
+		} else {
+			thereAreMore := true
+			for thereAreMore {
+				_, thereAreMore = openBraces.Pop()
+			}
 		}
 	}
 	fmt.Printf("The list of line values is %v\n", allScores)
@@ -179,8 +189,8 @@ func processSyntaxFileAutocomplete(inputData string) {
 		orderedScores = addElementInOrder(orderedScores, score)
 	}
 	fmt.Printf("The list in order is %v\n", orderedScores)
-	halfPosition := (len(orderedScores) / 2) + 1
-	fmt.Printf("The halfway point of %d is %d and the value there is %v\n", len(orderedScores), halfPosition, orderedScores[halfPosition])
+	halfPosition := (len(orderedScores) / 2)
+	fmt.Printf("The halfway point of %d is %d and the value there is %v\n", len(orderedScores), halfPosition+1, orderedScores[halfPosition])
 
 }
 
@@ -193,15 +203,14 @@ func addElementInOrder(list []big.Int, newElement big.Int) []big.Int {
 	added := false
 	for x := 0; x < len(list) && !added; x++ {
 		if newElement.Cmp(&(list)[x]) > 0 {
-			fmt.Printf("The list is %v and we are adding at position %d\n", list, x)
 			tempList := make([]big.Int, 0)
-			endOfElements := list[x:]
-			startOfElements := list[:x]
-			fmt.Printf("The bit we took off the end is %v and the bit from the start is %v\n", endOfElements, startOfElements)
-			tempList = append(startOfElements, newElement)
-			fmt.Printf("we have added the following elements to the temp list %v\nand the list looks like %v\n", tempList, list)
-			tempList = append(tempList, endOfElements...)
-			added = true
+			for index, element := range list {
+				if index == x {
+					tempList = append(tempList, newElement)
+					added = true
+				}
+				tempList = append(tempList, element)
+			}
 			list = tempList
 		}
 	}
