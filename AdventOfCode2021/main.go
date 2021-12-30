@@ -69,6 +69,8 @@ func processText(text string) {
 		ParseNavigationSyntaxFile()
 	case "11":
 		CalculateOctopusEvents()
+	case "12":
+		CavePathNavigation()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
