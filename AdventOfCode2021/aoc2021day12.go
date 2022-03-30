@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 )
 
 func CavePathNavigation() {
@@ -35,5 +36,33 @@ func navigatePathSimple(inputData string) {
 			exits[connection[1]] = append(exits[connection[1]], connection[0])
 		}
 	}
-	fmt.Printf("All connects are: %v\n", exits)
+	startPath := make([]string, 0)
+	startPath = append(startPath, "start")
+	fmt.Printf("The options are %v\n", exits)
+	allEndOptions := getAllOptions(startPath, exits)
+	fmt.Printf("The total number of options we found is %d\n", len(allEndOptions))
+}
+
+func getAllOptions(currentPath []string, options map[string][]string) [][]string {
+	// for each next step option
+	// add option to path
+	// get all the possible paths from there
+	// return the end
+
+	allOptions := make([][]string, 0)
+	for _, option := range options[currentPath[len(currentPath)-1]] {
+		tempPath := append(currentPath, option)
+		if option != "end" && (!contains(currentPath, option) || unicode.IsUpper(rune(option[0]))) {
+			allOptions = append(allOptions, getAllOptions(tempPath, options)...)
+		} else if option == "end" {
+			newTempPath := make([]string, 0)
+			// this is done to work around the issue with golang holding slice values by reference instead of by value.
+			for _, cave := range tempPath {
+				newTempPath = append(newTempPath, cave)
+			}
+			allOptions = append(allOptions, newTempPath)
+		}
+	}
+
+	return allOptions
 }
