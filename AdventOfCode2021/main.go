@@ -71,6 +71,8 @@ func processText(text string) {
 		CalculateOctopusEvents()
 	case "12":
 		CavePathNavigation()
+	case "13":
+		OrigamiCode()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
