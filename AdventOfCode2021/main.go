@@ -73,6 +73,8 @@ func processText(text string) {
 		CavePathNavigation()
 	case "13":
 		OrigamiCode()
+	case "14":
+		ChemicalExpansion()
 	default:
 		fmt.Println("I didn't recognize " + text + " as a valid input.")
 	}
